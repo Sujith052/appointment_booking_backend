@@ -19,7 +19,8 @@ def appointmentsection(request):
             print(date)
             timeslot = request.POST.get('timeslot')
             booking_status = "Slote Booked"
-            userid = userdata.objects.get(id=1)
+            id=request.session['loginid']
+            userid = userdata.objects.get(id=id)
             print(userid)
             sloteid=time_slot.objects.get(id=timeslot)
 
@@ -53,7 +54,7 @@ def getappointment_section(request,id):
 
 def getappointment_details(request):
     if request.method == "GET":
-        userid = 1
+        userid = request.session['loginid']
         appointment_details = appointmentbooking.objects.select_related("selected_slote").filter(user=userid) 
         serializer = appointment_detailsSerializer(appointment_details, many=True)
         return JsonResponse(serializer.data, safe=False)
